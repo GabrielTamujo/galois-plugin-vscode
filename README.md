@@ -1,5 +1,5 @@
 
-<h1 align="center"><img src="img/logo.png" alt="Galois Autocompleter"/><p>Galois Autocompleter</p></h1>
+<h1 align="center"><img src="images/logo.png" alt="Galois Autocompleter"/><p>Galois Autocompleter</p></h1>
 
 Galois is an auto code completer based on OpenAI GPT-2. It is trained on a curated list of approximately 45K Python (~470MB) files gathered from the Github.
 
