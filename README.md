@@ -1,5 +1,5 @@
 
-<h1 align="center"><img src="images/logo.png" alt="Galois Autocompleter"/><p>Galois Autocompleter</p></h1>
+<h1 align="center"><img src="./images/logo.png" alt="Galois Autocompleter"/><p>Galois Autocompleter</p></h1>
 
 Galois is an auto code completer based on OpenAI GPT-2. It is trained on a curated list of approximately 45K Python (~470MB) files gathered from the Github.
 
@@ -21,7 +21,7 @@ With the extension installed, you should set the [Galois Autocompleter](https://
 
 For setting the URL, just go to User Settings on your VSCode and search for Api Url. 
 
-![Setting Galois Autocompleter URL]('images/settings.png')
+![Setting Galois Autocompleter URL]('./images/settings.png')
 
 When you open a Python file, the extension will be activated automatically. 
 
