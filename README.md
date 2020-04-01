@@ -21,7 +21,7 @@ With the extension installed, you should set the [Galois Autocompleter](https://
 
 For setting the URL, just go to User Settings on your VSCode and search for Api Url. 
 
-![Setting Galois Autocompleter URL]('./images/settings.png')
+![Setting Galois Autocompleter URL](images/settings.png)
 
 When you open a Python file, the extension will be activated automatically. 
 
