@@ -27,9 +27,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 			const textBeforeCursor = textBeforeLineString + '\n' + textLineBeforeCursor;
 
-			console.log("\n\n\n\n\n");
-			console.log(textBeforeCursor);
-
 			const currentLineReplaceRange = new vscode.Range(new vscode.Position(lineIndex, textLineBeforeCursor.length), new vscode.Position(lineIndex, textLine.length));
 
 			const apiUrl : any = vscode.workspace.getConfiguration('galois-autocompleter-plugin').get('apiUrl');
