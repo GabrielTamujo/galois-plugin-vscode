@@ -13,11 +13,15 @@ export function activate(context: vscode.ExtensionContext) {
 		
 			const MAX_LINES_SUPPORTED = 30;
 
+			const documentText = "<|startoftext|>\n" + document.getText();
+
+			const textArray = documentText.split('\n');
+
 			const lineIndex = position.line;
 
-			const textArray = document.getText().split('\n');
+			const textBeforeLineArray = textArray.slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED + 1), lineIndex + 1);
 
-			const textBeforeLineArray = textArray.slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED), lineIndex);
+			console.log("\n\n\n textBeforeLineArray\n" + textBeforeLineArray + "\n\n\n\n");
 
 			const textBeforeLineString = textBeforeLineArray.join('\n');
 
@@ -32,9 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
 			const apiUrl : any = vscode.workspace.getConfiguration('galois-autocompleter-plugin').get('apiUrl');
 
 			try {
+
+				console.log("\n\n\n\ntextBeforeCursor\n" + textBeforeCursor + "\n\n\n\n");
+
 				const { data } = await axios.post(apiUrl, {
 					"text":textBeforeCursor
 				});
+
+				console.log("\n\n\n\ndata.result\n" + data.result + "\n\n\n\n");
 
 				const items = data.result.map((suggestion: string) =>{
 					const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Text);

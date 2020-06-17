@@ -17,9 +17,11 @@ function activate(context) {
         provideCompletionItems(document, position, token, context) {
             return __awaiter(this, void 0, void 0, function* () {
                 const MAX_LINES_SUPPORTED = 30;
+                const documentText = "<|startoftext|>\n" + document.getText();
+                const textArray = documentText.split('\n');
                 const lineIndex = position.line;
-                const textArray = document.getText().split('\n');
-                const textBeforeLineArray = textArray.slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED), lineIndex);
+                const textBeforeLineArray = textArray.slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED + 1), lineIndex + 1);
+                console.log("\n\n\n textBeforeLineArray\n" + textBeforeLineArray + "\n\n\n\n");
                 const textBeforeLineString = textBeforeLineArray.join('\n');
                 const textLine = document.lineAt(lineIndex).text;
                 const textLineBeforeCursor = document.lineAt(lineIndex).text.substr(0, position.character);
@@ -27,9 +29,11 @@ function activate(context) {
                 const currentLineReplaceRange = new vscode.Range(new vscode.Position(lineIndex, textLineBeforeCursor.length), new vscode.Position(lineIndex, textLine.length));
                 const apiUrl = vscode.workspace.getConfiguration('galois-autocompleter-plugin').get('apiUrl');
                 try {
+                    console.log("\n\n\n\ntextBeforeCursor\n" + textBeforeCursor + "\n\n\n\n");
                     const { data } = yield axios_1.default.post(apiUrl, {
                         "text": textBeforeCursor
                     });
+                    console.log("\n\n\n\ndata.result\n" + data.result + "\n\n\n\n");
                     const items = data.result.map((suggestion) => {
                         const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Text);
                         item.additionalTextEdits = [vscode.TextEdit.delete(currentLineReplaceRange)];
