@@ -4,9 +4,9 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 
 const getTextBeforeLineIndex = (document: vscode.TextDocument, position: vscode.Position): string => {
-	//Galois is showing some limitations over the text size that you can send
+	//Galois has limitations over the text size that you can send
 	const MAX_LINES_SUPPORTED = 30;
-	//It's necessary to attach an startoftext token at the beggin of the text
+	//It's necessary to attach an startoftext token at the beggin of the document
 	const documentText = "<|startoftext|>\n" + document.getText();
 	const lineIndex = position.line + 1;
 	const textBeforeLineArray = documentText.split('\n').slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED), lineIndex);
@@ -46,8 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 			} catch (err) {
 				console.error(err);
-				vscode.window.showInformationMessage('Galois Autocompleter - ' + err + ' - Something went wrong while connecting to service: '
-					+ apiUrl);
+				vscode.window.showInformationMessage('Galois Autocompleter - ' + err + ' - Something went wrong while connecting to service: ' + apiUrl);
 			}
 			return [];
 		}

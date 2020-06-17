@@ -10,7 +10,7 @@ The Plugin is not available yet on VS Code MarketPlace, but you can already easi
 On the root folder of the project run the following command:
 
 ```sh
-code --install-extension .\galois-autocompleter-plugin-0.0.1.vsix
+code --install-extension galois-autocompleter-plugin-0.0.1.vsix
 ```
 
 If you want to generate a new .vsix file check [here](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#packaging-extensions). 
