@@ -4,12 +4,10 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 
 const getTextBeforeLineIndex = (document: vscode.TextDocument, position: vscode.Position): string => {
-	//Galois has limitations over the text size that you can send
-	const MAX_LINES_SUPPORTED = 30;
 	//It's necessary to attach an startoftext token at the beggin of the document
 	const documentText = "<|startoftext|>\n" + document.getText();
 	const lineIndex = position.line + 1;
-	const textBeforeLineArray = documentText.split('\n').slice(Math.max(0, lineIndex - MAX_LINES_SUPPORTED), lineIndex);
+	const textBeforeLineArray = documentText.split('\n').slice(0, lineIndex);
 	return textBeforeLineArray.join('\n');
 };
 
