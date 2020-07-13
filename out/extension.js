@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const axios_1 = require("axios");
+const { CompletionItemKind, } = require("vscode");
 const getTextBeforeLineIndex = (document, position) => {
     //It's necessary to attach an startoftext token at the beggin of the document
     const documentText = "<|startoftext|>\n" + document.getText();
@@ -41,6 +42,7 @@ function activate(context) {
                         item.insertText = suggestion;
                         item.detail = "Galois Autocompleter";
                         item.documentation = suggestion;
+                        item.kind = CompletionItemKind.Module;
                         return item;
                     });
                     return items;

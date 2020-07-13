@@ -3,6 +3,10 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 
+const {
+	CompletionItemKind,
+  } = require("vscode");
+
 const getTextBeforeLineIndex = (document: vscode.TextDocument, position: vscode.Position): string => {
 	//It's necessary to attach an startoftext token at the beggin of the document
 	const documentText = "<|startoftext|>\n" + document.getText();
@@ -38,6 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 					item.insertText = suggestion;
 					item.detail = "Galois Autocompleter";
 					item.documentation = suggestion;
+					item.kind = CompletionItemKind.Module;
 					return item;
 				});
 				return items;
