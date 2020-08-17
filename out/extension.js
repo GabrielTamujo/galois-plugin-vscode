@@ -13,23 +13,53 @@ const vscode = require("vscode");
 const axios_1 = require("axios");
 const { CompletionItemKind, } = require("vscode");
 const getTextBeforeLineIndex = (document, position) => {
-    //It's necessary to attach an startoftext token at the beggin of the document
+    //It's necessary to attach an startoftext token at the beggining of the document
     const documentText = "<|startoftext|>\n" + document.getText();
     const lineIndex = position.line + 1;
     const textBeforeLineArray = documentText.split('\n').slice(0, lineIndex);
     return textBeforeLineArray.join('\n');
 };
+const triggers = [
+    ' ',
+    '.',
+    '(',
+    ')',
+    '{',
+    '}',
+    '[',
+    ']',
+    ',',
+    ':',
+    '\'',
+    '"',
+    '=',
+    '<',
+    '>',
+    '/',
+    '\\',
+    '+',
+    '-',
+    '|',
+    '&',
+    '*',
+    '%',
+    '=',
+    '$',
+    '#',
+    '@',
+    '!',
+];
 const getLineTextBeforeCursor = (document, position) => {
     return document.lineAt(position.line).text.substr(0, position.character);
 };
 function activate(context) {
     console.log('Galois-autocompleter-plugin is now active!');
-    let provider = vscode.languages.registerCompletionItemProvider({ language: 'python' }, {
+    let provider = vscode.languages.registerCompletionItemProvider({ pattern: '**' }, {
         provideCompletionItems(document, position, token, context) {
             return __awaiter(this, void 0, void 0, function* () {
-                const textBeforLineIndex = getTextBeforeLineIndex(document, position);
+                const textBeforeLineIndex = getTextBeforeLineIndex(document, position);
                 const lineTextBeforeCursor = getLineTextBeforeCursor(document, position);
-                const completeTextBeforeCursor = textBeforLineIndex + '\n' + lineTextBeforeCursor;
+                const completeTextBeforeCursor = textBeforeLineIndex + '\n' + lineTextBeforeCursor;
                 const currentLineReplaceRange = new vscode.Range(new vscode.Position(position.line, lineTextBeforeCursor.length), new vscode.Position(position.line, document.lineAt(position.line).text.length));
                 const apiUrl = vscode.workspace.getConfiguration('galois-autocompleter-plugin').get('apiUrl');
                 try {
@@ -42,7 +72,7 @@ function activate(context) {
                         item.insertText = suggestion;
                         item.detail = "Galois Autocompleter";
                         item.documentation = suggestion;
-                        item.kind = CompletionItemKind.Module;
+                        item.kind = CompletionItemKind.Property;
                         return item;
                     });
                     return items;
@@ -54,7 +84,7 @@ function activate(context) {
                 return [];
             });
         }
-    });
+    }, ...triggers);
     context.subscriptions.push(provider);
 }
 exports.activate = activate;
