@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const axios_1 = require("axios");
 const { CompletionItemKind, } = require("vscode");
-const getTextBeforeLineIndex = (document, position) => {
-    //It's necessary to attach an startoftext token at the beggining of the document
-    const documentText = "<|startoftext|>\n" + document.getText();
-    const lineIndex = position.line + 1;
-    const textBeforeLineArray = documentText.split('\n').slice(0, lineIndex);
-    return textBeforeLineArray.join('\n');
-};
 const triggers = [
     ' ',
     '.',
@@ -49,6 +42,13 @@ const triggers = [
     '@',
     '!',
 ];
+const getTextBeforeLineIndex = (document, position) => {
+    //It's necessary to attach an startoftext token at the beggining of the document
+    const documentText = "<|startoftext|>\n" + document.getText();
+    const lineIndex = position.line + 1;
+    const textBeforeLineArray = documentText.split('\n').slice(0, lineIndex);
+    return textBeforeLineArray.join('\n');
+};
 const getLineTextBeforeCursor = (document, position) => {
     return document.lineAt(position.line).text.substr(0, position.character);
 };
@@ -67,13 +67,16 @@ function activate(context) {
                         "text": completeTextBeforeCursor
                     });
                     const items = data.result.map((suggestion) => {
-                        const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Text);
-                        item.additionalTextEdits = [vscode.TextEdit.delete(currentLineReplaceRange)];
-                        item.insertText = suggestion;
-                        item.detail = "Galois Autocompleter";
-                        item.documentation = suggestion;
-                        item.kind = CompletionItemKind.Property;
-                        return item;
+                        suggestion = suggestion.split('\n')[0];
+                        if (suggestion.replace(/\s/g, '').length) {
+                            const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Text);
+                            item.range = currentLineReplaceRange;
+                            item.insertText = new vscode.SnippetString(suggestion);
+                            item.detail = "Galois Autocompleter";
+                            item.documentation = suggestion;
+                            item.kind = CompletionItemKind.Property;
+                            return item;
+                        }
                     });
                     return items;
                 }
