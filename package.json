@@ -66,7 +66,8 @@
 		"glob": "^7.1.6",
 		"mocha": "^7.0.1",
 		"typescript": "^3.7.5",
-		"vscode-test": "^1.3.0"
+		"vscode-test": "^1.3.0",
+		"lodash": ">=4.17.19"
 	},
 	"dependencies": {
 		"axios": "^0.19.2",
