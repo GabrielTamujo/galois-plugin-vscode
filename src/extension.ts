@@ -3,11 +3,9 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 
-const {
-	CompletionItemKind,
-  } = require("vscode");
+const { CompletionItemKind } = require("vscode");
 
-  const triggers = [
+const triggers = [
 	' ',
 	'.',
 	'(',
@@ -36,8 +34,9 @@ const {
 	'#',
 	'@',
 	'!',
-  ];
+];
 
+const DEFAULT_DETAIL = 'Galois Autocompleter'
 
 const getTextBeforeLineIndex = (document: vscode.TextDocument, position: vscode.Position): string => {
 	//It's necessary to attach an startoftext token at the beggining of the document
@@ -63,22 +62,18 @@ export function activate(context: vscode.ExtensionContext) {
 				new vscode.Position(position.line, lineTextBeforeCursor.length),
 				new vscode.Position(position.line, document.lineAt(position.line).text.length));
 			const apiUrl: any = vscode.workspace.getConfiguration('galois-autocompleter-plugin').get('apiUrl');
-			
 			try {
 				const { data } = await axios.post(apiUrl, {
 					"text": completeTextBeforeCursor
 				});
 				const items = data.result.map((suggestion: string) => {
-					suggestion = suggestion.split('\n')[0] 
-					if (suggestion.replace(/\s/g, '').length) {
-						const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Text);
-						item.range = currentLineReplaceRange;
-						item.insertText = new vscode.SnippetString(suggestion);
-						item.detail = "Galois Autocompleter";
-						item.documentation = suggestion;
-						item.kind = CompletionItemKind.Property;
-						return item;
-					}
+					const item = new vscode.CompletionItem(suggestion, vscode.CompletionItemKind.Property);
+					item.filterText = document.getText(currentLineReplaceRange);
+					item.range = currentLineReplaceRange;
+					item.insertText = new vscode.SnippetString(suggestion);
+					item.detail = DEFAULT_DETAIL;
+					item.documentation = suggestion;
+					return item;
 				});
 				return items;
 
