@@ -3,10 +3,9 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 
-const { CompletionItemKind } = require("vscode");
-
-const triggers = [
+const triggerChars = [
 	' ',
+	'_',
 	'.',
 	'(',
 	')',
@@ -33,7 +32,7 @@ const triggers = [
 	'$',
 	'#',
 	'@',
-	'!',
+	'!'
 ];
 
 const DEFAULT_DETAIL = 'Galois Autocompleter'
@@ -83,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			return [];
 		}
-	}, ...triggers);
+	}, ...triggerChars);
 
 	context.subscriptions.push(provider);
 }
