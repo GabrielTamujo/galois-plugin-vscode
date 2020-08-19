@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const axios_1 = require("axios");
-const { CompletionItemKind } = require("vscode");
-const triggers = [
+const triggerChars = [
     ' ',
+    '_',
     '.',
     '(',
     ')',
@@ -40,7 +40,7 @@ const triggers = [
     '$',
     '#',
     '@',
-    '!',
+    '!'
 ];
 const DEFAULT_DETAIL = 'Galois Autocompleter';
 const getTextBeforeLineIndex = (document, position) => {
@@ -85,7 +85,7 @@ function activate(context) {
                 return [];
             });
         }
-    }, ...triggers);
+    }, ...triggerChars);
     context.subscriptions.push(provider);
 }
 exports.activate = activate;
